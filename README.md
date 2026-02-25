@@ -33,3 +33,24 @@ Change `0` to the current MRR value and the progress bar updates automatically.
 ## Run locally
 
 Just open `index.html` in a browser. No server or dependencies needed.
+
+## Hosting — GitHub Pages + custom domain (ziar.no)
+
+The site is deployed via GitHub Pages with the custom domain `ziar.no`.
+
+**One-time GitHub setup:**
+1. Go to repo **Settings → Pages**
+2. Source: `main` branch, `/ (root)` folder → Save
+3. Under "Custom domain" enter `ziar.no` → Save
+
+**DNS records** (set at your domain registrar):
+
+| Type  | Name  | Value                |
+|-------|-------|----------------------|
+| A     | @     | 185.199.108.153      |
+| A     | @     | 185.199.109.153      |
+| A     | @     | 185.199.110.153      |
+| A     | @     | 185.199.111.153      |
+| CNAME | www   | ziarnooo.github.io   |
+
+After DNS propagates (up to 24h), enable **"Enforce HTTPS"** in Pages settings.
