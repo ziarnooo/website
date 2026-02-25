@@ -34,14 +34,14 @@ Change `0` to the current MRR value and the progress bar updates automatically.
 
 Just open `index.html` in a browser. No server or dependencies needed.
 
-## Hosting — GitHub Pages + custom domain (ziar.no)
+## Hosting — GitHub Pages + custom domain (dominikziarno.com)
 
-The site is deployed via GitHub Pages with the custom domain `ziar.no`.
+The site is deployed via GitHub Pages with the custom domain `dominikziarno.com`.
 
 **One-time GitHub setup:**
 1. Go to repo **Settings → Pages**
 2. Source: `main` branch, `/ (root)` folder → Save
-3. Under "Custom domain" enter `ziar.no` → Save
+3. Under "Custom domain" enter `dominikziarno.com` → Save
 
 **DNS records** (set at your domain registrar):
 
