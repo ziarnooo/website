@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dominik Ziarno — Founder Diary</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root { --max-w: 680px; --t: 0.22s ease; }
+    [data-theme="dark"] {
+      --bg: #191919; --surface: #212121; --border: #2e2e2e;
+      --text: #e3e3e3; --text-2: #999; --text-3: #555;
+      --tag-bg: #272727; --tag-text: #888;
+    }
+    [data-theme="light"] {
+      --bg: #ffffff; --surface: #f7f7f5; --border: #e9e9e7;
+      --text: #1a1a1a; --text-2: #787774; --text-3: #c5c4c0;
+      --tag-bg: #f1f1ef; --tag-text: #878683;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      transition: background var(--t), color var(--t);
+    }
+    /* ── TOPBAR ── */
+    .topbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 32px; height: 48px;
+      background: var(--bg); border-bottom: 1px solid var(--border);
+      transition: background var(--t), border-color var(--t);
+    }
+    .topbar-logo {
+      font-family: 'Lora', serif; font-size: 14px;
+      color: var(--text); text-decoration: none;
+    }
+    .topbar-right { display: flex; align-items: center; gap: 20px; }
+    .topbar-nav { display: flex; gap: 20px; list-style: none; }
+    .topbar-nav a { font-size: 13px; color: var(--text-2); text-decoration: none; transition: color var(--t); }
+    .topbar-nav a:hover { color: var(--text); }
+    .theme-btn {
+      background: var(--tag-bg); border: none; color: var(--text-2);
+      font-family: 'Inter', sans-serif; font-size: 12px;
+      padding: 5px 12px; border-radius: 6px; cursor: pointer;
+      transition: all var(--t);
+    }
+    .theme-btn:hover { color: var(--text); }
+    /* ── LAYOUT ── */
+    .page { max-width: var(--max-w); margin: 0 auto; padding: 0 32px; }
+    /* ── HERO ── */
+    .hero { padding-top: 108px; padding-bottom: 52px; }
+    .hero-eyebrow {
+      font-size: 11px; color: var(--text-3);
+      letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 20px;
+    }
+    .hero-title {
+      font-family: 'Lora', serif;
+      font-size: clamp(2.2rem, 5vw, 2.9rem);
+      font-weight: 400; line-height: 1.18;
+      letter-spacing: -0.02em; color: var(--text); margin-bottom: 10px;
+    }
+    .hero-role {
+      font-size: 13px; color: var(--text-2);
+      margin-bottom: 24px; font-weight: 300;
+    }
+    .hero-meta { display: flex; gap: 6px; flex-wrap: wrap; }
+    .chip {
+      font-size: 12px; background: var(--tag-bg);
+      color: var(--tag-text); padding: 4px 10px; border-radius: 4px;
+    }
+    /* ── DIVIDER ── */
+    .divider { border: none; border-top: 1px solid var(--border); margin: 44px 0; }
+    /* ── SECTION LABEL ── */
+    .section-label {
+      font-size: 11px; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--text-3); margin-bottom: 20px;
+    }
+    /* ── GOALS ── */
+    .goals-wrap { margin-bottom: 0; }
+    .goal-card {
+      border: 1px solid var(--border); border-radius: 8px;
+      padding: 18px 22px; margin-bottom: 10px;
+      transition: border-color var(--t);
+    }
+    .goal-active { background: var(--surface); }
+    .goal-locked {
+      opacity: 0.38;
+      pointer-events: none;
+    }
+    .goal-card-top {
+      display: flex; align-items: center;
+      justify-content: space-between; gap: 12px; flex-wrap: wrap;
+    }
+    .goal-card-left { display: flex; align-items: center; gap: 14px; }
+    .goal-num {
+      font-family: 'Lora', serif; font-size: 11px;
+      color: var(--text-3); letter-spacing: 0.06em; flex-shrink: 0;
+    }
+    .goal-title { font-size: 14px; color: var(--text); font-weight: 400; margin-bottom: 2px; }
+    .goal-target { font-size: 12px; color: var(--text-2); font-weight: 300; }
+    .goal-status-badge {
+      font-size: 11px; padding: 3px 9px; border-radius: 4px;
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .status-active { background: var(--tag-bg); color: var(--tag-text); }
+    .status-locked { background: transparent; color: var(--text-3); }
+    .goal-bar-labels {
+      display: flex; justify-content: space-between;
+      font-size: 11px; color: var(--text-3); margin-top: 6px;
+      font-variant-numeric: tabular-nums;
+    }
+    .bar-track { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; margin-top: 14px; }
+    .bar-fill { height: 100%; background: var(--text-2); width: 0%; border-radius: 2px; transition: width 1.4s cubic-bezier(0.4,0,0.2,1); }
+    /* ── PROJECT CARDS ── */
+    .project-item {
+      border: 1px solid var(--border); border-radius: 8px;
+      overflow: hidden; margin-bottom: 12px;
+      transition: border-color var(--t);
+    }
+    .project-item:hover { border-color: var(--text-3); }
+    /* collapsable header / trigger */
+    .project-trigger {
+      display: flex; align-items: flex-start;
+      justify-content: space-between;
+      padding: 18px 22px; gap: 12px;
+      cursor: pointer; user-select: none;
+      width: 100%; text-align: left; background: none; border: none;
+      color: var(--text);
+    }
+    .project-trigger:focus-visible { outline: 2px solid var(--text-3); outline-offset: -2px; }
+    .project-trigger-left { flex: 1; }
+    .project-name {
+      font-family: 'Lora', serif; font-size: 1.05rem;
+      font-weight: 500; color: var(--text); margin-bottom: 5px;
+    }
+    .project-name a {
+      color: inherit; text-decoration: none; transition: color var(--t);
+    }
+    .project-name a:hover { color: var(--text-2); }
+    .project-meta {
+      display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    }
+    .project-date { font-size: 12px; color: var(--text-3); font-weight: 300; }
+    .project-badge {
+      font-size: 11px; letter-spacing: 0.03em;
+      padding: 3px 8px; border-radius: 4px;
+      white-space: nowrap; background: var(--tag-bg);
+      color: var(--tag-text); flex-shrink: 0;
+    }
+    .project-trigger-right {
+      display: flex; flex-direction: column;
+      align-items: flex-end; gap: 8px; flex-shrink: 0;
+    }
+    .chevron {
+      font-size: 11px; color: var(--text-3);
+      transition: transform 0.25s ease;
+      display: block; line-height: 1;
+    }
+    .project-item.open .chevron { transform: rotate(180deg); }
+    /* collapsable body */
+    .project-body {
+      display: grid; grid-template-rows: 0fr;
+      transition: grid-template-rows 0.3s ease;
+    }
+    .project-item.open .project-body { grid-template-rows: 1fr; }
+    .project-body-inner { overflow: hidden; }
+    .project-desc-wrap { padding: 0 22px 16px; }
+    .project-desc {
+      font-size: 13.5px; color: var(--text-2);
+      line-height: 1.75; font-weight: 300;
+    }
+    .best-learning {
+      margin: 12px 22px 0;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 6px; padding: 12px 16px;
+    }
+    .learning-label {
+      font-size: 10px; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--text-3); margin-bottom: 6px;
+    }
+    .learning-text {
+      font-size: 13px; color: var(--text-2); font-weight: 300; line-height: 1.6;
+    }
+    .project-footer {
+      border-top: 1px solid var(--border);
+      padding: 10px 22px; margin-top: 16px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .project-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+    .ext-link {
+      font-size: 12px; color: var(--text-2);
+      text-decoration: none; transition: color var(--t);
+    }
+    .ext-link:hover { color: var(--text); }
+    /* ghost */
+    .ghost-item {
+      border: 1px dashed var(--border); border-radius: 8px;
+      padding: 18px 22px; margin-bottom: 12px;
+    }
+    .ghost-label { font-size: 13px; color: var(--text-3); display: flex; align-items: center; gap: 8px; font-weight: 300; }
+    /* ── FOOTER ── */
+    footer { padding: 28px 0 48px; }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+    .footer-left { display: flex; align-items: center; gap: 10px; }
+    .footer-clock { font-size: 12px; color: var(--text-2); font-variant-numeric: tabular-nums; letter-spacing: 0.02em; font-weight: 300; }
+    .footer-loc { font-size: 12px; color: var(--text-3); font-weight: 300; }
+    .footer-left .footer-loc::before { content: "·"; margin-right: 10px; color: var(--border); }
+    .footer-counter { display: flex; align-items: center; gap: 7px; }
+    .footer-counter-num { font-size: 12px; color: var(--text-2); font-weight: 400; font-variant-numeric: tabular-nums; }
+    .footer-counter-label { font-size: 12px; color: var(--text-3); font-weight: 300; }
+    /* ── REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(10px); transition: opacity 0.42s ease, transform 0.42s ease; }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+    @media (max-width: 520px) {
+      .page { padding: 0 20px; }
+      .topbar { padding: 0 20px; }
+      .topbar-nav { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a href="#" class="topbar-logo">Dominik Ziarno</a>
+    <div class="topbar-right">
+      <button class="theme-btn" id="themeBtn">☀️ Light</button>
+    </div>
+  </header>
+  <main class="page">
+    <!-- HERO -->
+    <section class="hero reveal">
+      <p class="hero-eyebrow">Founder Diary</p>
+      <h1 class="hero-title">Building from zero<br>to one million.</h1>
+      <p class="hero-role">Head of Product Delivery at <a href="https://masterborn.com" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px solid var(--border);transition:border-color var(--t);" onmouseover="this.style.borderColor='var(--text-2)'" onmouseout="this.style.borderColor='var(--border)'">MasterBorn</a> · aspiring solopreneur</p>
+      <div class="hero-meta">
+        <span class="chip">🪁 Kitesurfing</span>
+        <span class="chip">⚙️ No-code &amp; AI</span>
+        <span class="chip">🏃 Running</span>
+        <span class="chip">🏍️ Motorbikes</span>
+      </div>
+    </section>
+    <!-- GOALS -->
+    <div class="goals-wrap reveal">
+      <p class="section-label">Revenue goals</p>
+      <!-- GOAL 1 — active -->
+      <div class="goal-card goal-active">
+        <div class="goal-card-top">
+          <div class="goal-card-left">
+            <span class="goal-num">01</span>
+            <div>
+              <p class="goal-title">First recurring revenue</p>
+              <p class="goal-target">$200 / mo MRR</p>
+            </div>
+          </div>
+          <span class="goal-status-badge status-active">In progress</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill" id="barFill"></div></div>
+        <div class="goal-bar-labels">
+          <span id="currentAmt">$0</span>
+          <span>$200 MRR</span>
+        </div>
+      </div>
+      <!-- GOAL 2 — locked -->
+      <div class="goal-card goal-locked">
+        <div class="goal-card-top">
+          <div class="goal-card-left">
+            <span class="goal-num">02</span>
+            <div>
+              <p class="goal-title">Quarter million</p>
+              <p class="goal-target">$250 000 total revenue</p>
+            </div>
+          </div>
+          <span class="goal-status-badge status-locked">🔒 Locked</span>
+        </div>
+      </div>
+      <!-- GOAL 3 — locked -->
+      <div class="goal-card goal-locked">
+        <div class="goal-card-top">
+          <div class="goal-card-left">
+            <span class="goal-num">03</span>
+            <div>
+              <p class="goal-title">One million</p>
+              <p class="goal-target">$1 000 000 total revenue</p>
+            </div>
+          </div>
+          <span class="goal-status-badge status-locked">🔒 Locked</span>
+        </div>
+      </div>
+    </div>
+    <hr class="divider" />
+    <!-- PROJECTS -->
+    <section id="projects" class="reveal">
+      <p class="section-label">Projects</p>
+      <!-- racefolio -->
+      <div class="project-item" id="card-racefolio">
+        <button class="project-trigger" onclick="toggleCard('card-racefolio')">
+          <div class="project-trigger-left">
+            <p class="project-name">
+              <a href="https://racefolio.app" target="_blank" onclick="event.stopPropagation()">racefolio.app ↗</a>
+            </p>
+            <div class="project-meta">
+              <span class="project-date">Launched Mar 2024</span>
+              <span class="project-badge">🟢 Active</span>
+            </div>
+          </div>
+          <div class="project-trigger-right">
+            <span class="chevron">▾</span>
+          </div>
+        </button>
+        <div class="project-body">
+          <div class="project-body-inner">
+            <div class="project-desc-wrap">
+              <p class="project-desc">
+                Your athletic portfolio for running. Track personal records across all distances —
+                5K, 10K, half marathon, marathon and more — and plan your next race goal.
+                A clean, focused home for your PRs.
+              </p>
+            </div>
+            <div class="best-learning">
+              <p class="learning-label">💡 Best learning</p>
+              <p class="learning-text">Growth hack using Strava descriptions — auto-generated race summaries with a profile link exposed the app to thousands of athletes organically. Almost free user acquisition.</p>
+            </div>
+            <div class="project-footer">
+              <div class="project-tags">
+                <span class="chip">no-code</span>
+                <span class="chip">running</span>
+                <span class="chip">SaaS</span>
+              </div>
+              <a href="https://racefolio.app" target="_blank" class="ext-link">Visit →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- granfondorank -->
+      <div class="project-item" id="card-gfr">
+        <button class="project-trigger" onclick="toggleCard('card-gfr')">
+          <div class="project-trigger-left">
+            <p class="project-name">
+              <a href="https://granfondorank.cc" target="_blank" onclick="event.stopPropagation()">granfondorank.cc ↗</a>
+            </p>
+            <div class="project-meta">
+              <span class="project-date">Launched 2022</span>
+              <span class="project-badge">🟢 Active</span>
+              <span class="project-badge">Co-founder</span>
+            </div>
+          </div>
+          <div class="project-trigger-right">
+            <span class="chevron">▾</span>
+          </div>
+        </button>
+        <div class="project-body">
+          <div class="project-body-inner">
+            <div class="project-desc-wrap">
+              <p class="project-desc">
+                Cycling race portfolio and performance index for gran fondo athletes.
+                The GFR Score™ lets you compare your performance across races worldwide —
+                calculated by AI analysis of official GPX files against a simulated benchmark athlete.
+                500 000+ athletes, automatic Strava bio updates, and all your races in one place.
+              </p>
+            </div>
+            <div class="project-footer">
+              <div class="project-tags">
+                <span class="chip">cycling</span>
+                <span class="chip">AI</span>
+                <span class="chip">Strava</span>
+                <span class="chip">SaaS</span>
+              </div>
+              <a href="https://granfondorank.cc" target="_blank" class="ext-link">Visit →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ghost -->
+      <div class="ghost-item">
+        <p class="ghost-label"><span>🕳️</span><span>Next project — idea in the backlog. Watch this space.</span></p>
+      </div>
+    </section>
+    <footer>
+      <div class="footer-inner">
+        <div class="footer-left">
+          <span class="footer-clock" id="footerClock"></span>
+          <span class="footer-loc">Warsaw, Poland</span>
+        </div>
+        <div class="footer-counter">
+          <span class="footer-counter-num" id="footerDays">0</span>
+          <span class="footer-counter-label">days on this journey</span>
+        </div>
+      </div>
+    </footer>
+  </main>
+  <script>
+    // THEME
+    const root = document.documentElement;
+    const btn  = document.getElementById('themeBtn');
+    btn.addEventListener('click', () => {
+      const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      btn.textContent = next === 'dark' ? '☀️ Light' : '🌙 Dark';
+    });
+    // COLLAPSABLE CARDS
+    function toggleCard(id) {
+      document.getElementById(id).classList.toggle('open');
+    }
+    // PROGRESS BAR
+    const CURRENT_MRR = 0; // ← update: current monthly recurring revenue in USD
+    const GOAL_MRR    = 200;
+    const pct = Math.min((CURRENT_MRR / GOAL_MRR) * 100, 100);
+    function animateBar() {
+      document.getElementById('barFill').style.width = pct + '%';
+      const el = document.getElementById('currentAmt');
+      const dur = 1000; let start;
+      const step = ts => {
+        if (!start) start = ts;
+        const p = Math.min((ts - start) / dur, 1);
+        el.textContent = '$' + Math.floor(p * CURRENT_MRR);
+        if (p < 1) requestAnimationFrame(step);
+        else el.textContent = '$' + CURRENT_MRR;
+      };
+      requestAnimationFrame(step);
+    }
+    // CLOCK + COUNTER
+    const START_DATE = new Date('2026-02-25T00:00:00');
+    function updateFooter() {
+      const now = new Date();
+      // Warsaw time
+      const warsaw = now.toLocaleString('en-GB', {
+        timeZone: 'Europe/Warsaw',
+        hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+      });
+      document.getElementById('footerClock').textContent = warsaw;
+      // Days counter
+      const diff = Math.floor((now - START_DATE) / (1000 * 60 * 60 * 24));
+      document.getElementById('footerDays').textContent = diff;
+    }
+    updateFooter();
+    setInterval(updateFooter, 1000);
+    // SCROLL REVEAL
+    const items = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver(entries => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => {
+            e.target.classList.add('in');
+            if (e.target.querySelector('#barFill')) animateBar();
+          }, i * 60);
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    items.forEach(el => io.observe(el));
+  </script>
+</body>
+</html>
